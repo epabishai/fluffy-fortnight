@@ -13,7 +13,7 @@ npm install
 npm start
 ```
 
-Open <http://localhost:3000>. Choose a topic to filter the cards. The API also supports `GET /api/entries?tag=Security`, and `GET /fixtures/feed.xml` serves the committed fixture.
+Open <http://localhost:3000>. Choose a topic to filter the cards, or use the Dark mode button to switch themes; your choice is saved in this browser. The API also supports `GET /api/entries?tag=Security`, and `GET /fixtures/feed.xml` serves the committed fixture.
 
 Run the tests with `npm test` and JavaScript syntax checks with `npm run lint`.
 
@@ -71,8 +71,7 @@ Preview the eleven demo issues with `./scripts/seed-issues.sh --dry-run`, then r
 issues within the first 1,000 results. Issue numbers match the walkthrough only in
 a new repository.
 
-The parser now uses async/await; dark mode and a Deprecations view are not
-implemented.
+The parser now uses async/await; a Deprecations view is not implemented.
 
 The fixture includes synthetic community and deprecation entries. Title markup
 is rendered as literal text, and fixture access stays restricted to `feed.xml`.

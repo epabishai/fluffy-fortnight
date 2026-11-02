@@ -2,6 +2,21 @@ const entryContainer = document.querySelector("#entries");
 const tagFilter = document.querySelector("#tag-filter");
 const entryCount = document.querySelector("#entry-count");
 const statusMessage = document.querySelector("#status");
+const themeToggle = document.querySelector("#theme-toggle");
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+}
+
+function loadThemePreference() {
+  try {
+    const preference = window.localStorage.getItem("theme");
+    return preference === "dark" || preference === "light" ? preference : "light";
+  } catch {
+    return "light";
+  }
+}
 
 function formatDate(value) {
   const date = new Date(value);
@@ -75,4 +90,12 @@ async function loadEntries() {
 }
 
 tagFilter.addEventListener("change", loadEntries);
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
+  try {
+    window.localStorage.setItem("theme", nextTheme);
+  } catch {}
+});
+applyTheme(loadThemePreference());
 loadEntries();

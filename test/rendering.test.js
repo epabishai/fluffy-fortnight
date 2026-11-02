@@ -24,9 +24,10 @@ test("cards assign untrusted titles and summaries as text, never HTML", () => {
   const source = fs.readFileSync(path.join(__dirname, "..", "public", "app.js"), "utf8");
   const context = vm.createContext({
     document: {
+      documentElement: { dataset: {} },
       createElement,
       querySelector() {
-        return { value: "", addEventListener() {}, replaceChildren() {} };
+        return { value: "", addEventListener() {}, replaceChildren() {}, setAttribute() {} };
       },
     },
     fetch: () => new Promise(() => {}),
@@ -43,4 +44,44 @@ test("cards assign untrusted titles and summaries as text, never HTML", () => {
   assert.equal(card.children.find((node) => node.tagName === "p").textContent, entry.summary);
   assert.equal(elements.find((node) => node.tagName === "span").textContent, entry.tags[0]);
   assert.equal(elements.some((node) => ["strong", "em"].includes(node.tagName)), false);
+});
+
+test("theme toggle restores and persists the accessible preference", () => {
+  const elements = new Map();
+  for (const selector of ["#entries", "#tag-filter", "#entry-count", "#status", "#theme-toggle"]) {
+    elements.set(selector, {
+      value: "",
+      attributes: {},
+      listeners: {},
+      addEventListener(event, listener) { this.listeners[event] = listener; },
+      setAttribute(name, value) { this.attributes[name] = value; },
+      replaceChildren() {},
+    });
+  }
+  const document = {
+    documentElement: { dataset: {} },
+    querySelector(selector) { return elements.get(selector); },
+  };
+  const stored = new Map([["theme", "dark"]]);
+  const context = vm.createContext({
+    document,
+    window: {
+      localStorage: {
+        getItem(key) { return stored.get(key); },
+        setItem(key, value) { stored.set(key, value); },
+      },
+    },
+    fetch: () => new Promise(() => {}),
+  });
+
+  const source = fs.readFileSync(path.join(__dirname, "..", "public", "app.js"), "utf8");
+  vm.runInContext(source, context);
+
+  const toggle = elements.get("#theme-toggle");
+  assert.equal(document.documentElement.dataset.theme, "dark");
+  assert.equal(toggle.attributes["aria-pressed"], "true");
+  toggle.listeners.click();
+  assert.equal(document.documentElement.dataset.theme, "light");
+  assert.equal(toggle.attributes["aria-pressed"], "false");
+  assert.equal(stored.get("theme"), "light");
 });
