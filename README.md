@@ -17,6 +17,41 @@ Open <http://localhost:3000>. Choose a topic to filter the cards. The API also s
 
 Run the tests with `npm test` and JavaScript syntax checks with `npm run lint`.
 
+## Release readiness
+
+The project Copilot dynamic workflow `release-readiness` requires a recent
+Copilot CLI with experimental features enabled (`copilot --experimental`).
+Trust this repository, load its extension in a new session, and ask Copilot
+to list the available dynamic workflows to confirm registration.
+The Copilot host supplies the extension SDK; no application dependency is needed.
+
+Install dependencies with `npm ci` first. Fetch your comparison branch if it is
+not available locally (for example, `git fetch origin main`). Then ask Copilot:
+
+```text
+Run the release-readiness dynamic workflow with baseRef "origin/main" and
+models ["<first available model ID>", "<second available model ID>"].
+```
+
+Choose two distinct model IDs available to your account. The workflow runs
+`npm test`, `npm run lint`, and `npm audit` in code, retaining failures rather
+than skipping subsequent checks. Audit requires access to the npm registry.
+It reviews each tracked changed file in parallel against the merge base of
+`baseRef` and `HEAD`, including committed, staged, unstaged, and deleted files.
+Untracked files are not reviewed; stage new files first.
+
+Each proposed finding is independently assessed by both models. Only findings
+both affirm are reported; failed reviews or assessments are marked as incomplete
+coverage. Agents receive captured diffs and are instructed not to edit or execute
+commands. Normal Copilot permissions still apply to agents; the extension itself
+executes the fixed npm and Git commands directly, so run it only in trusted code.
+
+The workflow displays check results and agreed findings, then **pauses before
+generating its summary**, even when there are no findings. Review the results
+in the session, open `/workflows`, and resume that run only when ready.
+Resume reuses the saved checks and reviews; start a new run if the code changes.
+The summary is returned to the session, not written to a repository file.
+
 ## Run with Docker
 
 Requires Docker with Compose.
