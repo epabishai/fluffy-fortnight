@@ -10,17 +10,15 @@ const fixtureXml = fs.readFileSync(path.join(__dirname, "fixtures", "feed.xml"),
 
 app.use(express.static(publicDirectory));
 
-app.get("/api/entries", (request, response) => {
-  parseFeed(fixtureXml, (parseError, entries) => {
-    if (parseError) {
-      response.status(500).json({ error: "Unable to parse the changelog fixture." });
-      return;
-    }
-
+app.get("/api/entries", async (request, response) => {
+  try {
+    const entries = await parseFeed(fixtureXml);
     const tags = [...new Set(entries.flatMap((entry) => entry.tags))].sort();
     const selectedTag = typeof request.query.tag === "string" ? request.query.tag : "";
     response.json({ entries: filterEntries(entries, selectedTag), tags });
-  });
+  } catch {
+    response.status(500).json({ error: "Unable to parse the changelog fixture." });
+  }
 });
 
 app.get("/fixtures/:name", (request, response) => {
