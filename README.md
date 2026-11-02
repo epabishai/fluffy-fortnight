@@ -36,8 +36,8 @@ Preview the eleven demo issues with `./scripts/seed-issues.sh --dry-run`, then r
 issues within the first 1,000 results. Issue numbers match the walkthrough only in
 a new repository.
 
-The parser remains callback-style for Act 2; dark mode and a Deprecations view
-are not implemented.
+The parser now uses async/await; dark mode and a Deprecations view are not
+implemented.
 
 The fixture includes synthetic community and deprecation entries. Title markup
 is rendered as literal text, and fixture access stays restricted to `feed.xml`.
@@ -46,7 +46,7 @@ The security act verifies safeguards rather than introducing vulnerabilities.
 ## Project structure
 
 - `server.js` serves the static app, `/api/entries`, and the committed fixture.
-- `src/legacy/parseFeed.js` is a callback-style, regex-based RSS parser retained as a legacy example.
+- `src/legacy/parseFeed.js` is an async, regex-based RSS parser retained as a legacy example.
 - `src/lib/tagFilter.js` provides tested, case-insensitive topic filtering.
 - `public/` contains the browser app and styles.
 - `fixtures/feed.xml` provides offline sample data.

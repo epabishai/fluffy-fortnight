@@ -11,7 +11,7 @@ Thanks for helping improve Changelog Radar. The app is a small Node.js demo that
 
 ## Project areas
 
-- `src/legacy/parseFeed.js` is callback-style, regex-based feed parsing retained as a legacy example.
+- `src/legacy/parseFeed.js` is async, regex-based feed parsing retained as a legacy example.
 - `src/lib/tagFilter.js` contains the small, tested filtering utility.
 - `public/` contains the browser UI; render feed values as text rather than HTML.
 - `fixtures/feed.xml` is the offline demo data.
