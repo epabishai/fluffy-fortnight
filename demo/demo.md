@@ -35,7 +35,7 @@ Dark mode and the Deprecations view are left for the live demo.
 Issues #1 and #2. Watch which requests proceed on their own and which ask you. Narrate it. Do not predict it.
 
 ```
-I'm new to this repo. Trace how an RSS entry becomes a card on screen, then run the tests and tell me which one is flaky and why.
+I'm new to this repo. Trace how an RSS entry becomes a card on screen, then run the tests and explain how the fixture freshness check stays deterministic.
 ```
 
 ```

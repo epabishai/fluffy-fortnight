@@ -11,6 +11,22 @@
     <description>Snapshot of recent GitHub changelog headlines for offline demos.</description>
 
     <item>
+      <title><![CDATA[Community note: <strong>render feed titles as text</strong>]]></title>
+      <link>https://example.com/demo/community-note</link>
+      <pubDate>Wed, 21 Oct 2026 12:00:00 +0000</pubDate>
+      <category>Community</category>
+      <description>Synthetic demo data: harmless title markup must appear as literal text, not HTML.</description>
+    </item>
+
+    <item>
+      <title>Synthetic demo: legacy API deprecation notice</title>
+      <link>https://example.com/demo/deprecation-notice</link>
+      <pubDate>Tue, 20 Oct 2026 12:00:00 +0000</pubDate>
+      <category>Deprecations</category>
+      <description>Synthetic demo data for the Deprecations view exercise; this is not a GitHub product announcement.</description>
+    </item>
+
+    <item>
       <title>GitHub Copilot code review is generally available</title>
       <link>https://github.blog/changelog/2025-04-04-copilot-code-review-ga/</link>
       <pubDate>Fri, 04 Apr 2025 16:00:00 +0000</pubDate>
