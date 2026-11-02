@@ -21,15 +21,15 @@ test("the offline demo serves entries and only the committed fixture", async (t)
   const response = await fetch(`${base}/api/entries`);
   assert.equal(response.status, 200);
   const { entries, tags } = await response.json();
-  assert.equal(entries.length, 19);
-  assert.equal(entries[0].title, "Community note: <strong>render feed titles as text</strong>");
-  assert.ok(tags.includes("Deprecations"));
+  assert.equal(entries.length, 17);
+  assert.equal(entries[0].title, "GitHub Copilot code review is generally available");
+  assert.ok(tags.includes("retired"));
 
-  const filtered = await fetch(`${base}/api/entries?tag=deprecations`);
+  const filtered = await fetch(`${base}/api/entries?tag=retired`);
   const filteredBody = await filtered.json();
   assert.equal(filtered.status, 200);
-  assert.equal(filteredBody.entries.length, 1);
-  assert.ok(filteredBody.entries[0].tags.includes("Deprecations"));
+  assert.equal(filteredBody.entries.length, 2);
+  assert.ok(filteredBody.entries.every((entry) => entry.tags.includes("retired")));
   assert.deepEqual(filteredBody.tags, tags);
 
   const fixture = await fetch(`${base}/fixtures/feed.xml`);
