@@ -2,8 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const { promisify } = require("node:util");
-const parseFeed = promisify(require("../src/legacy/parseFeed"));
+const parseFeed = require("../src/legacy/parseFeed");
 
 test("the newest fixture entry is no more than a week old at the reference date", async () => {
   const xml = fs.readFileSync(path.join(__dirname, "..", "fixtures", "feed.xml"), "utf8");

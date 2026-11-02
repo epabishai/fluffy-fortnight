@@ -4,22 +4,9 @@ const fs = require("node:fs");
 const path = require("node:path");
 const parseFeed = require("../src/legacy/parseFeed");
 
-function parse(xml) {
-  return new Promise((resolve, reject) => {
-    parseFeed(xml, (error, entries) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve(entries);
-    });
-  });
-}
-
 test("parses fixture entry dates, tags, and summaries", async () => {
   const xml = fs.readFileSync(path.join(__dirname, "..", "fixtures", "feed.xml"), "utf8");
-  const entries = await parse(xml);
+  const entries = await parseFeed(xml);
 
   assert.equal(entries.length, 17);
   assert.deepEqual(entries[0], {
@@ -45,7 +32,7 @@ test("preserves markup in a fixture title as literal text", async () => {
   const fixtureWithMarkupTitle = xml.replace(fixtureTitle, literalMarkupTitle);
 
   assert.notEqual(fixtureWithMarkupTitle, xml);
-  const [entry] = await parse(fixtureWithMarkupTitle);
+  const [entry] = await parseFeed(fixtureWithMarkupTitle);
 
   assert.equal(entry.title, "Community note: <strong>render feed titles as text</strong>");
 });

@@ -35,11 +35,7 @@ function toSummary(description) {
     .trim();
 }
 
-function parseFeed(xml, callback) {
-  if (typeof callback !== "function") {
-    throw new TypeError("parseFeed expects a callback");
-  }
-
+async function parseFeed(xml) {
   const entries = [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map((match) => {
     const description = getField(match[1], "description");
     const categories = [...match[1].matchAll(/<category\b[^>]*>([\s\S]*?)<\/category>/gi)]
@@ -55,7 +51,7 @@ function parseFeed(xml, callback) {
     };
   });
 
-  callback(null, entries);
+  return entries;
 }
 
 module.exports = parseFeed;
