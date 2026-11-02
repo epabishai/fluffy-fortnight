@@ -15,7 +15,8 @@ app.get("/api/entries", async (request, response) => {
     const entries = await parseFeed(fixtureXml);
     const tags = [...new Set(entries.flatMap((entry) => entry.tags))].sort();
     const selectedTag = typeof request.query.tag === "string" ? request.query.tag : "";
-    response.json({ entries: filterEntries(entries, selectedTag), tags });
+    const selectedView = typeof request.query.view === "string" ? request.query.view : "";
+    response.json({ entries: filterEntries(entries, selectedTag, selectedView), tags });
   } catch {
     response.status(500).json({ error: "Unable to parse the changelog fixture." });
   }

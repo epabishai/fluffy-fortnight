@@ -16,7 +16,12 @@ test("the offline demo serves entries and only the committed fixture", async (t)
 
   const page = await fetch(base);
   assert.equal(page.status, 200);
-  assert.match(await page.text(), /Changelog Radar/);
+  const html = await page.text();
+  assert.match(html, /Changelog Radar/);
+  assert.match(html, /<label for="view-filter">View<\/label>/);
+  assert.match(html, /<select id="view-filter" name="view">/);
+  assert.match(html, /<option value="">All entries<\/option>/);
+  assert.match(html, /<option value="deprecations">Deprecations<\/option>/);
 
   const response = await fetch(`${base}/api/entries`);
   assert.equal(response.status, 200);
@@ -31,6 +36,21 @@ test("the offline demo serves entries and only the committed fixture", async (t)
   assert.equal(filteredBody.entries.length, 2);
   assert.ok(filteredBody.entries.every((entry) => entry.tags.includes("retired")));
   assert.deepEqual(filteredBody.tags, tags);
+
+  for (const [query, expected] of [
+    ["view=deprecations", 2],
+    ["view=deprecations&tag=copilot", 1],
+    ["view=deprecations&tag=actions", 1],
+    ["view=deprecations&tag=release", 0],
+    ["view=deprecations&tag=Deprecations", 2],
+  ]) {
+    const result = await fetch(`${base}/api/entries?${query}`);
+    assert.equal(result.status, 200);
+    const body = await result.json();
+    assert.equal(body.entries.length, expected, query);
+    assert.ok(body.entries.every((entry) => entry.tags.includes("Deprecations")));
+    assert.deepEqual(body.tags, tags);
+  }
 
   const fixture = await fetch(`${base}/fixtures/feed.xml`);
   assert.equal(fixture.status, 200);

@@ -1,5 +1,6 @@
 const entryContainer = document.querySelector("#entries");
 const tagFilter = document.querySelector("#tag-filter");
+const viewFilter = document.querySelector("#view-filter");
 const entryCount = document.querySelector("#entry-count");
 const statusMessage = document.querySelector("#status");
 const themeToggle = document.querySelector("#theme-toggle");
@@ -68,9 +69,14 @@ async function loadEntries() {
   entryContainer.replaceChildren();
 
   try {
-    const query = tagFilter.value
-      ? `?tag=${encodeURIComponent(tagFilter.value)}`
-      : "";
+    const params = [];
+    if (tagFilter.value) {
+      params.push(`tag=${encodeURIComponent(tagFilter.value)}`);
+    }
+    if (viewFilter.value) {
+      params.push(`view=${encodeURIComponent(viewFilter.value)}`);
+    }
+    const query = params.length ? `?${params.join("&")}` : "";
     const response = await fetch(`/api/entries${query}`);
     if (!response.ok) {
       throw new Error("The changelog could not be loaded.");
@@ -82,7 +88,9 @@ async function loadEntries() {
       entryContainer.append(createCard(entry));
     }
     entryCount.textContent = `${entries.length} ${entries.length === 1 ? "entry" : "entries"}`;
-    statusMessage.textContent = entries.length ? "" : "No entries match this topic.";
+    statusMessage.textContent = entries.length ? "" : viewFilter.value === "deprecations"
+      ? "No deprecations match the selected topic."
+      : "No entries match this topic.";
   } catch {
     entryCount.textContent = "";
     statusMessage.textContent = "Unable to load the changelog. Please try again.";
@@ -90,6 +98,7 @@ async function loadEntries() {
 }
 
 tagFilter.addEventListener("change", loadEntries);
+viewFilter.addEventListener("change", loadEntries);
 themeToggle.addEventListener("click", () => {
   const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   applyTheme(nextTheme);
