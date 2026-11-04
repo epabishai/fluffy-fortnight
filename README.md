@@ -15,6 +15,11 @@ npm start
 
 Open <http://localhost:3000>. Choose a topic to filter the cards, or use the Dark mode button to switch themes; your choice is saved in this browser. The API also supports `GET /api/entries?tag=Security`, and `GET /fixtures/feed.xml` serves the committed fixture.
 
+Choose **Deprecations** in the View selector to show only entries tagged Deprecations,
+or **All entries** to return to the full feed. Topic filtering applies in both views;
+an empty state appears when no entries match. The API supports the same combination,
+for example `GET /api/entries?view=deprecations&tag=copilot`.
+
 Run the tests with `npm test` and JavaScript syntax checks with `npm run lint`.
 
 ## Release readiness
@@ -71,7 +76,7 @@ Preview the eleven demo issues with `./scripts/seed-issues.sh --dry-run`, then r
 issues within the first 1,000 results. Issue numbers match the walkthrough only in
 a new repository.
 
-The parser now uses async/await; a Deprecations view is not implemented.
+The parser now uses async/await; the Deprecations view composes with topic filtering.
 
 The fixture includes synthetic community and deprecation entries. Title markup
 is rendered as literal text, and fixture access stays restricted to `feed.xml`.
@@ -81,7 +86,7 @@ The security act verifies safeguards rather than introducing vulnerabilities.
 
 - `server.js` serves the static app, `/api/entries`, and the committed fixture.
 - `src/legacy/parseFeed.js` is an async, regex-based RSS parser retained as a legacy example.
-- `src/lib/tagFilter.js` provides tested, case-insensitive topic filtering.
+- `src/lib/tagFilter.js` provides tested, case-insensitive topic and Deprecations filtering.
 - `public/` contains the browser app and styles.
 - `fixtures/feed.xml` provides offline sample data.
 - `test/` contains deterministic regression tests.

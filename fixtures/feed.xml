@@ -139,7 +139,7 @@
 
       <pubDate>Mon, 19 Oct 2026 12:00:00 +0000</pubDate>
 
-      <category>retired</category><category>copilot</category>
+      <category>retired</category><category>copilot</category><category>Deprecations</category>
 
       <description>Read the full entry on the GitHub changelog.</description>
 
@@ -237,7 +237,7 @@
 
       <pubDate>Thu, 01 Oct 2026 12:00:00 +0000</pubDate>
 
-      <category>retired</category><category>actions</category>
+      <category>retired</category><category>actions</category><category>Deprecations</category>
 
       <description>Read the full entry on the GitHub changelog.</description>
 
